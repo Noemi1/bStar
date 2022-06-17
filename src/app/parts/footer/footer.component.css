@@ -1,0 +1,21 @@
+.footer {
+  width: 100vw;
+  height: 30px;
+  background-color: #100f0f;
+  display: flex;
+  align-items: stretch;
+}
+
+.footer__inner {
+    /* padding: 10px 0; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer__inner p {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.836);
+  font-size: 12px;
+}

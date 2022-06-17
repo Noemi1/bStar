@@ -1,0 +1,160 @@
+<div class="modal" [class.active]="modalOpen">
+  <div class="modal__bg" (click)="voltar()"></div>
+  <div class="modal__inner" cdkDrag style="max-width: 800px;">
+    <div class="modal__content">
+      <div class="modal__header" cdkDragHandle>
+        <h3 class="text-orange">Filtrar</h3>
+        <a (click)="voltar()" class="modal__header-close btn-close">
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+      <div class="modal__body">
+        <form #form="ngForm" class="novalidate">
+          <!--  Geral -->
+          <div class="mt-1">
+            <div class="form-row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <span><strong>Geral:</strong></span>
+                <hr>
+              </div>
+            </div>
+            <div class="m-1">
+              <div class=" form-row p-1 bg-light border pt-2 px-2">
+                <!-- Id -->
+                <div class="form-group col-lg-1 col-md-1 col-sm-2 col-2">
+                  <label for="id">Id: </label>
+                  <input type="text"
+                         mask="0*"
+                         class="form-control"
+                         name="id"
+                         id="id"
+                         #id="ngModel"
+                         [(ngModel)]="filtro.id">
+                </div>
+                <!-- Orgão Emissor -->
+                <div class="form-group col-lg-3 col-md-3 col-sm-5 col-5">
+                  <label for="orgao">Orgão Emissor: </label>
+                  <input type="text" class="form-control" name="orgao" id="orgao" #orgao="ngModel"
+                         [(ngModel)]="filtro.orgao">
+                </div>
+                <!-- Tipo -->
+                <div class="form-group col-lg-3 col-md-3 col-sm-5 col-5">
+                  <label for="tipoDocumento">Tipo: </label>
+                  <input type="text" class="form-control" name="tipoDocumento" id="tipoDocumento" #tipoDocumento="ngModel"
+                         [(ngModel)]="filtro.tipoDocumento">
+                </div>
+                <!-- Número -->
+                <div class="form-group col-lg-5 col-md-5 col-sm-12 col-12">
+                  <label for="numeroDocumento">Número: </label>
+                  <input type="text" class="form-control" name="numeroDocumento" id="numeroDocumento" #numeroDocumento="ngModel"
+                         [(ngModel)]="filtro.numeroDocumento">
+                </div>
+                <!-- Resumo -->
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
+                  <label for="resumo">Resumo: </label>
+                  <input type="text" class="form-control" name="resumo" id="resumo" #resumo="ngModel"
+                         [(ngModel)]="filtro.resumo">
+                </div>
+                <!-- Link -->
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
+                  <label for="link">Link: </label>
+                  <input type="text" class="form-control" name="link" id="link" #link="ngModel"
+                         [(ngModel)]="filtro.link">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--  Datas -->
+          <div class="mt-4">
+            <div class="form-row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <span><strong>Datas:</strong></span>
+                <hr>
+              </div>
+            </div>
+            <!--  Data Entrada -->
+            <div class="m-1">
+              <div class="form-row bg-light justify-content-between border pt-2 px-2">
+                <div class="form-group col-lg-4 col-md-4 col-sm-12 col-12">
+                  <label for="dataEntrada_data" class="text-orange fw-bold">Data Entrada:</label>
+                  <input type="date" class="form-control" name="dataEntrada_data" id="dataEntrada_data"
+                         #dataEntrada_data="ngModel" [ngModel]="filtro.dataEntrada.data | date : 'yyyy-MM-dd' : 'UTC'"
+                         (change)="filtro.dataEntrada.data = dataEntrada_data.value"
+                         [disabled]="dataEntrada_de.value || dataEntrada_ate.value ">
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center">
+                  <strong class="text-orange fw-bold">ou</strong>
+                </div>
+                <div class="form-row col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+                    <label for="dataEntrada_de" class="fw-bold">De:</label>
+                    <input type="date" class="form-control" name="dataEntrada_de" id="dataEntrada_de"
+                           #dataEntrada_de="ngModel" [ngModel]="filtro.dataEntrada.de | date : 'yyyy-MM-dd' : 'UTC'"
+                           (change)="filtro.dataEntrada.de = dataEntrada_de.value" [disabled]="dataEntrada_data.value">
+                  </div>
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+                    <label for="dataEntrada_ate" class="fw-bold">Até:</label>
+                    <input type="date" class="form-control" name="dataEntrada_ate" id="dataEntrada_ate"
+                           #dataEntrada_ate="ngModel" [ngModel]="filtro.dataEntrada.ate | date : 'yyyy-MM-dd' : 'UTC'"
+                           (change)="filtro.dataEntrada.ate = dataEntrada_ate.value"
+                           [disabled]="dataEntrada_data.value">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  Data Documento -->
+            <div class="m-1">
+              <div class="form-row bg-light justify-content-between border pt-2 px-2">
+                <div class="form-group col-lg-4 col-md-4 col-sm-12 col-12">
+                  <label for="dataDocumento_data" class="text-orange fw-bold">Data Documento:</label>
+                  <input type="date" class="form-control" name="dataDocumento_data" id="dataDocumento_data"
+                         #dataDocumento_data="ngModel" [ngModel]="filtro.dataDocumento.data | date : 'yyyy-MM-dd' : 'UTC'"
+                         (change)="filtro.dataDocumento.data = dataDocumento_data.value"
+                         [disabled]="dataDocumento_de.value || dataDocumento_ate.value ">
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center">
+                  <strong class="text-orange fw-bold">ou</strong>
+                </div>
+                <div class="form-row col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+                    <label for="dataDocumento_de" class="fw-bold">De:</label>
+                    <input type="date" class="form-control" name="dataDocumento_de" id="dataDocumento_de"
+                           #dataDocumento_de="ngModel" [ngModel]="filtro.dataDocumento.de | date : 'yyyy-MM-dd' : 'UTC'"
+                           (change)="filtro.dataDocumento.de = dataDocumento_de.value"
+                           [disabled]="dataDocumento_data.value">
+                  </div>
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+                    <label for="data_recompra_ate" class="fw-bold">Até:</label>
+                    <input type="date" class="form-control" name="dataDocumento_ate" id="dataDocumento_ate"
+                           #dataDocumento_ate="ngModel" [ngModel]="filtro.dataDocumento.ate | date : 'yyyy-MM-dd' : 'UTC'"
+                           (change)="filtro.dataDocumento.ate = dataDocumento_ate.value"
+                           [disabled]="dataDocumento_data.value">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="form-row">
+            <div class="d-flex justify-content-between flex-wrap col-lg-12">
+              <ul *ngIf="erro">
+                <li class="text-red" *ngFor="let err of erro">{{err}}</li>
+              </ul>
+              <div class="d-flex ml-auto mt-3 flex-wrap">
+                <button type="button" class="btn btn-dark mr-2 ml-0"
+                        (click)="limparFiltro()"
+                        [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Limpar filtro </button>
+                <button type="button" class="btn btn-primary"
+                        (click)="filtrar()"
+                        [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Filtrar </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

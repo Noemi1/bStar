@@ -1,0 +1,86 @@
+<div class="modal" [class.active]="modalOpen">
+  <div class="modal__bg" (click)="voltar()"></div>
+  <div class="modal__inner" cdkDrag style="max-width: 800px;">
+    <div class="modal__content">
+      <div class="modal__header" cdkDragHandle>
+        <h3 class="text-orange">Filtrar</h3>
+        <a (click)="voltar()" class="modal__header-close btn-close">
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+      <div class="modal__body">
+        <form #form="ngForm" class="novalidate">
+          <!--  Geral -->
+          <div class="mt-1">
+            <div class="form-row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <span><strong>Geral:</strong></span>
+                <hr>
+              </div>
+            </div>
+            <div class="m-1">
+              <div class=" form-row p-1 bg-light border pt-2 px-2">
+                <!-- Id -->
+                <div class="form-group col-lg-1 col-md-1 col-sm-2 col-2">
+                  <label for="id">Id: </label>
+                  <input type="text"
+                         mask="0*"
+                         class="form-control"
+                         name="id"
+                         id="id"
+                         #id="ngModel"
+                         [(ngModel)]="objeto.id">
+                </div>
+                <!-- Orgão Emissor -->
+                <div class="form-group col-lg-3 col-md-3 col-sm-5 col-5">
+                  <label for="orgao">Orgão Emissor: </label>
+                  <input type="text" class="form-control" name="orgao" id="orgao" #orgao="ngModel"
+                         [(ngModel)]="objeto.orgao">
+                </div>
+                <!-- Tipo -->
+                <div class="form-group col-lg-3 col-md-3 col-sm-5 col-5">
+                  <label for="tipoDocumento">Tipo: </label>
+                  <input type="text" class="form-control" name="tipoDocumento" id="tipoDocumento" #tipoDocumento="ngModel"
+                         [(ngModel)]="objeto.tipoDocumento">
+                </div>
+                <!-- Número -->
+                <div class="form-group col-lg-5 col-md-5 col-sm-12 col-12">
+                  <label for="numeroDocumento">Número: </label>
+                  <input type="text" class="form-control" name="numeroDocumento" id="numeroDocumento" #numeroDocumento="ngModel"
+                         [(ngModel)]="objeto.numeroDocumento">
+                </div>
+                <!-- Resumo -->
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
+                  <label for="resumo">Resumo: </label>
+                  <input type="text" class="form-control" name="resumo" id="resumo" #resumo="ngModel"
+                         [(ngModel)]="objeto.resumo">
+                </div>
+                <!-- Link -->
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
+                  <label for="link">Link: </label>
+                  <input type="text" class="form-control" name="link" id="link" #link="ngModel"
+                         [(ngModel)]="objeto.link">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="form-row">
+            <div class="d-flex justify-content-between flex-wrap col-lg-12">
+              <ul *ngIf="erro">
+                <li class="text-red" *ngFor="let err of erro">{{err}}</li>
+              </ul>
+              <div class="d-flex ml-auto mt-3 flex-wrap">
+                <button type="button" class="btn btn-primary"
+                        (click)="send(form)"
+                        [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Filtrar </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
