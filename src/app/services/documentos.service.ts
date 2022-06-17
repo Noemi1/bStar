@@ -25,7 +25,6 @@ export class DocumentosService {
   ) { }
 
   filtrar() {
-    console.log(this.filtro.value);
     if (this.filtro.value != undefined) {
       this.table.loading.next(true);
 
@@ -102,6 +101,8 @@ export class DocumentosService {
       .pipe(map(list => {
 				list.forEach(item => {
 					item.idEncrypted = this.crypto.encrypt(item.id);
+          item.dataEntradaFormatted = this.datePipe.transform(item.dataEntrada, "dd/MM/yyyy '\às\' HH:mm") ?? '';
+          item.dataDocumentoFormatted = this.datePipe.transform(item.dataDocumento, 'dd/MM/yyyy') ?? '';
 					return item
 				});
 

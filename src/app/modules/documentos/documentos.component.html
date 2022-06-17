@@ -52,7 +52,7 @@
               <input pInputText
                      type="text"
                      class="form-control "
-                     (input)="dt.filterGlobal(filter.value , 'contains')"
+                     (input)="dt.filterGlobal(filter.value, 'contains')"
                      #filter
                      placeholder="Pesquisar" />
             </div>
@@ -73,7 +73,6 @@
                       [attr.data-name]="'filterMenu_' + col.field">
                 <span class="pi pi-filter-icon pi-filter"></span>
               </button>
-              <!-- <p-columnFilter [type]="col.filterType" [field]="col.field"></p-columnFilter> -->
             </th>
             <th></th>
             <th class="td-actions">

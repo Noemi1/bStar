@@ -1,11 +1,13 @@
 export class Documento {
   idEncrypted: string = '';
   id: number = 0;
-  dataEntrada: Date = new Date;
   orgao: string = '';
   tipoDocumento: string = '';
   numeroDocumento: string = '';
+  dataEntrada: Date = new Date;
+  dataEntradaFormatted: string = '';
   dataDocumento: Date = new Date;
+  dataDocumentoFormatted: string = '';
   resumo: string = '';
   link: string = '';
 }

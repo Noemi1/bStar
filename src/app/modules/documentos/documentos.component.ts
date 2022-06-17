@@ -49,16 +49,16 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.push(selectedItems);
 
     this.cols = [
-      { title: 'Id', field: 'id', filterType: 'text', maskType: MaskType.none },
-      { title: 'Data Entrada', field: 'dataEntrada', filterType: 'date', maskType: MaskType.dateTime },
-      { title: 'Orgão Emissor', field: 'orgao', filterType: 'text', maskType: MaskType.none },
-      { title: 'Tipo', field: 'tipoDocumento', filterType: 'text', maskType: MaskType.none },
-      { title: 'Número', field: 'numeroDocumento', filterType: 'text', maskType: MaskType.none },
-      { title: 'Data Emissão', field: 'dataDocumento', filterType: 'date', maskType: MaskType.date },
-      { title: 'Resumo', field: 'resumo', filterType: 'text', maskType: MaskType.none },
-      // { title: 'Link Teste', field: 'link', filterType: 'text', maskType: MaskType.none },
-      // { title: 'Link Teste 1', field: 'link', filterType: 'text', maskType: MaskType.none },
-      // { title: 'Link Teste 2', field: 'link', filterType: 'text', maskType: MaskType.none },
+      { title: 'Id', field: 'id', maskType: MaskType.none },
+      { title: 'Data Entrada', field: 'dataEntradaFormatted', maskType: MaskType.none },
+      { title: 'Orgão Emissor', field: 'orgao', maskType: MaskType.none },
+      { title: 'Tipo', field: 'tipoDocumento', maskType: MaskType.none },
+      { title: 'Número', field: 'numeroDocumento', maskType: MaskType.none },
+      { title: 'Data Emissão', field: 'dataDocumentoFormatted', maskType: MaskType.none },
+      { title: 'Resumo', field: 'resumo', maskType: MaskType.none },
+      // { title: 'Link Teste', field: 'link', maskType: MaskType.none },
+      // { title: 'Link Teste 1', field: 'link', maskType: MaskType.none },
+      // { title: 'Link Teste 2', field: 'link', maskType: MaskType.none },
     ];
     this.filters = this.cols.map(x => x.field);
 

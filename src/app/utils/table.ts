@@ -266,7 +266,6 @@ export function setFilterPosition() {
 export class TableCols {
   title: string = '';
   field: string = '';
-  filterType: string = 'text';
   maskType: MaskType = MaskType.none;
 }
 
