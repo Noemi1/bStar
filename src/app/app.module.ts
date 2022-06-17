@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { DocumentosComponent } from './modules/documentos/documentos.component';
 import { HeaderComponent } from './parts/header/header.component';
 import { FooterComponent } from './parts/footer/footer.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,6 +16,8 @@ import { FiltroComponent } from './modules/documentos/filtro/filtro.component';
 import { FilterMatchMode, PrimeNGConfig } from 'primeng/api';
 import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { RequestInterceptor } from './helpers/request.interceptor';
+import { ResponseInterceptor } from './helpers/response.interceptor';
 
 
 registerLocaleData(localePt);
@@ -50,6 +52,8 @@ registerLocaleData(localePt);
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'BRL'
     },
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

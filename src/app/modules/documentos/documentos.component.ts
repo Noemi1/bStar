@@ -38,7 +38,9 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.documentoService.list.subscribe(res => this.list = res);
     this.documentoService.getAll().subscribe();
-    this.table.loading.subscribe(res => this.loading = res);
+    this.table.loading.subscribe(res => {
+      this.loading = res;
+    });
 
     var selected = this.table.selected.subscribe(res => this.selected = res);
     this.subscription.push(selected);
@@ -118,7 +120,6 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   filtrar() {
-    console.log(this.filtro)
     if (
       !this.filtro.id &&
       !this.filtro.numeroDocumento?.trim() &&
@@ -126,35 +127,31 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
       !this.filtro.orgao?.trim() &&
       !this.filtro.resumo?.trim() &&
       !this.filtro.link?.trim() &&
-      !this.filtro.dataDocumento?.de &&
-      !this.filtro.dataDocumento?.ate &&
-      !this.filtro.dataDocumento?.data &&
-      !this.filtro.dataEntrada?.de &&
-      !this.filtro.dataEntrada?.ate &&
-      !this.filtro.dataEntrada?.data
+      !this.filtro.dataDocumento.de &&
+      !this.filtro.dataDocumento.ate &&
+      !this.filtro.dataDocumento.data &&
+      !this.filtro.dataEntrada.de &&
+      !this.filtro.dataEntrada.ate &&
+      !this.filtro.dataEntrada.data
     ) {
-      this.limparFiltro();
+      // this.limparFiltro();
+      this.documentoService.filtro.next(undefined);
+    } else {
+      this.documentoService.filtro.next(this.filtro)
     }
-    this.documentoService.filtro.next(this.filtro)
     this.aplicarFiltro();
   }
 
-  limparFiltro() {
-    this.documentoService.filtro.next(undefined);
-    this.documentoService.getAll().toPromise().then(
-      res => {
-        this.table.close_filter();
-      },
-      err => this.toastr.error('Não foi possível carregar a listagem')
-      )
-    }
 
     aplicarFiltro() {
       this.documentoService.getAll().toPromise().then(
         res => {
         this.table.close_filter();
       },
-      err => this.toastr.error('Não foi possível carregar a listagem')
+      err => {
+        console.error(err);
+        this.toastr.error('Não foi possível carregar a listagem')
+      }
     )
   }
 
