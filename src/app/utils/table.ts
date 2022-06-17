@@ -18,7 +18,7 @@ export class TableService {
 
   initialize() {
     this.resetSelection();
-    this.toggle_row_menu();
+    // this.toggle_row_menu();
     this.filter_position_on_table_scroll();
     this.filter_toggle();
   }

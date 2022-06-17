@@ -19,9 +19,10 @@
 	--orange: #ff6315;
 	--dark: #000;
 	--grey: rgb(24, 24, 24);
-	--purple: #A661F6;
-	--purple-dark: #8c47dc;
+	--purple: #8c47dc;
+	--purple-dark: #7031b8;
 	--pink: #F94184;
+	--pink-dark: #eb236c;
 	--light: pink;
 	--grey-light: pink;
 }
@@ -346,8 +347,8 @@ a.btn-dark.disabled:not([href]) {
 .btn-purple:focus,
 .btn-purple:hover,
 a.btn-purple:not([href]):hover {
-	background-color: var(--purple);
-	border-color: var(--purple);
+	background-color: var(--purple-dark);
+	border-color: var(--purple-dark);
 	box-shadow: 0 0px 0 2px rgb(118 0 255 / 30%);
 	color: #fff;
 }
@@ -380,8 +381,8 @@ a.btn-purple.disabled:not([href]) {
 .btn-pink:focus,
 .btn-pink:hover,
 a.btn-pink:not([href]):hover {
-	background-color: var(--pink);
-	border-color: var(--pink);
+	background-color: var(--pink-dark);
+	border-color: var(--pink-dark);
 	box-shadow: 0 0px 0 2px rgb(249 65 132 / 45%);
 	color: #fff;
 }
@@ -617,12 +618,14 @@ a.btn-pink.disabled:not([href]) {
 	outline: 0;
 }
 
-.form-control.ng-touched.ng-valid:not(.novalidate .form-control.ng-touched.ng-valid) {
+form .form-control.ng-touched.ng-valid:not([novalidate] .form-control.ng-touched.ng-valid),
+form .form-control.ng-touched.ng-valid:not(.novalidate .form-control.ng-touched.ng-valid) {
 	background: #f1fbf1;
 	border-color: #5cb15c;
 }
 
-.form-control.ng-touched.ng-invalid:not(.novalidate .form-control.ng-touched.ng-invalid) {
+form .form-control.ng-touched.ng-invalid:not([novalidate] .form-control.ng-touched.ng-invalid),
+form .form-control.ng-touched.ng-invalid:not(.novalidate .form-control.ng-touched.ng-invalid) {
 	background: #fff5f5;
 	border-color: var(--orange);
 }
@@ -1130,8 +1133,7 @@ tbody tr.alert-dark:nth-of-type(even) td {
 
 .form-control:disabled,
 .form-control:disabled::placeholder,
-.form-control:disabled::-webkit-datetime-edit-fields-wrapper,
-.form-control[readonly] {
+.form-control:disabled::-webkit-datetime-edit-fields-wrapper{
 	color: #5a5a5a;
 	text-decoration: line-through;
 }
@@ -1257,3 +1259,15 @@ tbody tr.alert-dark:nth-of-type(even) td {
 }
 
 /* testeee*/
+
+[novalidate] .form-control {
+  border: 1px solid #ced4da !important;
+  opacity: 1;
+  background-color: #fff!important;
+  cursor: default;
+}
+
+[novalidate] .form-control:hover {
+  box-shadow: 0 0 0 2.2px rgb(255 99 21 / 21%);
+  border-color: transparent!important;
+}

@@ -91,13 +91,6 @@ export class DocumentosService {
           return string == resumo || string.includes(resumo) || resumo.includes(string);
         });
       }
-      if (filtro.link?.trim()) {
-        var link = filtro.link?.trim().toLowerCase();
-        list = list.filter(x => {
-          var string = x.link.trim().toLowerCase();
-          return string == link || string.includes(link) || link.includes(string);
-        });
-      }
       this.list.next(list);
     }
     this.table.loading.next(false);
@@ -123,9 +116,9 @@ export class DocumentosService {
       }));
   }
 
-  get(id: number) {
+  get(id: number): Observable<Documento> {
     this.table.loading.next(true);
-    return this.http.get(`${this.url}/Documento?id=${id}`)
+    return this.http.get<Documento>(`${this.url}/Documento/${id}`)
       .pipe(map(res => {
         this.table.loading.next(false);
         return res;

@@ -63,7 +63,6 @@ export class FiltroComponent implements OnInit {
       !this.filtro.tipoDocumento?.trim() &&
       !this.filtro.orgao?.trim() &&
       !this.filtro.resumo?.trim() &&
-      !this.filtro.link?.trim() &&
       !this.filtro.dataDocumento?.de &&
       !this.filtro.dataDocumento?.ate &&
       !this.filtro.dataDocumento?.data &&

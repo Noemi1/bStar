@@ -50,13 +50,12 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.cols = [
       { title: 'Id', field: 'id', filterType: 'text', maskType: MaskType.none },
-      { title: 'Data Entrada', field: 'dataEntrada', filterType: 'date', maskType: MaskType.date },
+      { title: 'Data Entrada', field: 'dataEntrada', filterType: 'date', maskType: MaskType.dateTime },
       { title: 'Orgão Emissor', field: 'orgao', filterType: 'text', maskType: MaskType.none },
       { title: 'Tipo', field: 'tipoDocumento', filterType: 'text', maskType: MaskType.none },
       { title: 'Número', field: 'numeroDocumento', filterType: 'text', maskType: MaskType.none },
-      { title: 'Data Documento', field: 'dataDocumento', filterType: 'date', maskType: MaskType.date },
+      { title: 'Data Emissão', field: 'dataDocumento', filterType: 'date', maskType: MaskType.date },
       { title: 'Resumo', field: 'resumo', filterType: 'text', maskType: MaskType.none },
-      { title: 'Link', field: 'link', filterType: 'text', maskType: MaskType.none },
       // { title: 'Link Teste', field: 'link', filterType: 'text', maskType: MaskType.none },
       // { title: 'Link Teste 1', field: 'link', filterType: 'text', maskType: MaskType.none },
       // { title: 'Link Teste 2', field: 'link', filterType: 'text', maskType: MaskType.none },
@@ -99,12 +98,14 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
 
   copiar(item: Documento) {
     var cols = this.cols.map(x => x.title) as string[];
+    cols.push('Link');
     this.table.copiarLinha(cols, item);
   }
 
   copiarLinha(items: Documento[]) {
     items = items.sort((x, y) => x.id - y.id);
-    var cols = this.cols.map(x => x.title)
+    var cols = this.cols.map(x => x.title);
+    cols.push('Link');
     var rows = items.map(item => ({
       id: item.id ? item.id : '-',
       dataEntrada: item.dataEntrada ? this.datePipe.transform(item.dataEntrada?.toString(), 'dd/MM/yyyy', 'UTC') : '-',
@@ -126,7 +127,6 @@ export class DocumentosComponent implements OnInit, OnDestroy, AfterViewInit {
       !this.filtro.tipoDocumento?.trim() &&
       !this.filtro.orgao?.trim() &&
       !this.filtro.resumo?.trim() &&
-      !this.filtro.link?.trim() &&
       !this.filtro.dataDocumento.de &&
       !this.filtro.dataDocumento.ate &&
       !this.filtro.dataDocumento.data &&

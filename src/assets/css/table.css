@@ -124,7 +124,7 @@ td.td-actions {
 }
 
 .actions__nav {
-  background: var(--purple-dark);
+  background: var(--purple);
   display: flex;
   flex-flow: column;
   padding: 10px 0;

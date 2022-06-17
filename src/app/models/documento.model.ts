@@ -18,7 +18,6 @@ export class DocumentoFiltro {
   numeroDocumento?: string;
   dataDocumento: FiltroData = new FiltroData;
   resumo?: string;
-  link?: string;
 }
 
 

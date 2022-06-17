@@ -10,8 +10,9 @@
     </p> -->
     <h3><strong>Documentos</strong></h3>
     <div class="mt-3 d-flex flex-wrap align-items-start">
-      <a class="btn btn-dark mr-1 mb-1" routerLink="./cadastrar">Adicionar linha</a>
-      <a class="btn btn-dark mr-1 mb-1" *ngIf="(selected || selectedItems.length > 0)" (click)="copiarLinha(selectedItems)">Copiar</a>
+      <!-- <a class="btn btn-dark mr-1 mb-1" routerLink="./cadastrar">Adicionar linha</a> -->
+      <a class="btn btn-dark mr-1" *ngIf="selected && selectedItems.length == 1" [routerLink]="['ver-mais', selected?.idEncrypted]">Ver mais</a>
+      <a class="btn btn-dark mr-1" *ngIf="selected || selectedItems.length > 0" (click)="copiarLinha(selectedItems)">Copiar</a>
       <a class="btn btn-filter ml-auto" routerLink="./filtro">
         <fa-icon [icon]="faFilter"></fa-icon>
       </a>
@@ -65,16 +66,16 @@
             <th>
               <p-tableHeaderCheckbox *ngIf="list.length > 0"></p-tableHeaderCheckbox>
             </th>
-            <th *ngFor="let col of cols"  [attr.data-name]="'filterMenu_' + col.field">
+            <th *ngFor="let col of cols" [attr.data-name]="'filterMenu_' + col.field">
               <span>{{ col.title }}</span>
               <p-sortIcon [field]="col.field" [pSortableColumn]="col.field"></p-sortIcon>
-
               <button class="btn p-column-filter-menu-button"
-                    [attr.data-name]="'filterMenu_' + col.field">
+                      [attr.data-name]="'filterMenu_' + col.field">
                 <span class="pi pi-filter-icon pi-filter"></span>
               </button>
               <!-- <p-columnFilter [type]="col.filterType" [field]="col.field"></p-columnFilter> -->
             </th>
+            <th></th>
             <th class="td-actions">
               <div class="actions">
                 <button class="actions__toggle"></button>
@@ -95,12 +96,15 @@
                 [pSelectableRowIndex]="rowIndex">
               <!-- {{col.maskType.toString() }} -->
               <span *ngIf="col.maskType.toString() == 'none'">{{ item[col.field] }}</span>
-              <span *ngIf="col.maskType.toString() == 'date' || col.maskType.toString() == 'datetime'">{{ item[col.field] | date : "dd/MM/yyyy" : 'UTC' }}</span>
-              <span *ngIf="col.maskType.toString() == 'datetime'"> às {{ item[col.field] | date : "hh:mm" : 'UTC' }}</span>
+              <span *ngIf="col.maskType.toString() == 'date' || col.maskType.toString() == 'dateTime'">{{ item[col.field] | date : "dd/MM/yyyy" : 'UTC' }}</span>
+              <span *ngIf="col.maskType.toString() == 'dateTime'"> às {{ item[col.field] | date : "HH:mm" : '' }}</span>
+            </td>
+            <td>
+              <a href="https://{{item.link}}" target="_blank" class="btn btn-purple">Acessar documento</a>
             </td>
             <td class="td-actions">
               <div class="actions">
-                <button class="actions__toggle"
+                <!-- <button class="actions__toggle"
                         [class.active]="item == selected">
                   <span class="icon icon-ellipsis"
                         (click)="onRowSelect(item)">
@@ -110,7 +114,7 @@
                         (click)="onRowUnselect(item)">
                     <fa-icon [icon]="faTimes"></fa-icon>
                   </span>
-                </button>
+                </button> -->
               </div>
             </td>
           </tr>
@@ -130,384 +134,339 @@
     </div>
   </div>
 </section>
-
-<div class="actions__nav">
+<!-- <div class="actions__nav">
   <div class="actions__nav-inner"
        *ngIf="selected">
+     <a class="actions__nav-link"
+       [routerLink]="['ver-mais', selected.idEncrypted]">Ver mais</a>
     <a class="actions__nav-link"
-       [routerLink]="['editar']"
-       [queryParams]="{ id: selected.idEncrypted }">Editar</a>
+       [routerLink]="['editar', selected.idEncrypted]">Editar</a>
     <a class="actions__nav-link"
-       [routerLink]="['excluir']"
-       [queryParams]="{ id: selected.idEncrypted }">Excluir</a>
+       [routerLink]="['excluir', selected.idEncrypted]">Excluir</a>
   </div>
-</div>
-
+</div> -->
 <div class="filtros">
-	<!-- Id -->
-	<form class="filter-menu novalidate"
-			#filterMenu_id
-			data-name="filterMenu_id"
-			data-open="false"
-			#form_id="ngForm">
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-					<div class="d-flex justify-content-between align-items-end">
-						<label for="id"
-								 class="text-orange fw-bold">Id:</label>
-						<button type="reset"
-								  class="clear_filter"
-								  [disabled]="loading"
-								  (click)="form_id.reset(); filtrar()">Limpar</button>
-					</div>
-					<div class="d-flex mt-2">
-						<div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-							<input mask="0*"
-									 class="form-control"
-									 name="id"
-									 id="id"
-									 #id="ngModel"
-									 [(ngModel)]="filtro.id">
-						</div>
-						<button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-								  (click)="filtrar()"
-								  [disabled]="loading">
-							<span>
-								<fa-icon [icon]="faFilter"></fa-icon>
-							</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<!-- Data Entrada -->
-	<form class="filter-menu novalidate"
-			#filterMenu_dataEntrada
-			data-name="filterMenu_dataEntrada"
-			data-open="false"
-			#form_dataEntrada>
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-4 col-md-4 col-sm-12 col-12 pr-0">
-					<label for="dataEntrada_data"
-							 class="text-orange fw-bold">Data Entrada:</label>
-					<input type="date"
-							 class="form-control"
-							 name="dataEntrada_data"
-							 id="dataEntrada_data"
-							 #dataEntrada_data="ngModel"
-							 [ngModel]="filtro.dataEntrada.data | date : 'yyyy-MM-dd' : 'UTC'"
-							 (change)="filtro.dataEntrada.data = dataEntrada_data.value"
-							 [disabled]="dataEntrada_de.value || dataEntrada_ate.value ">
-				</div>
-				<div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center px-0">
-					<strong class="text-orange fw-bold">ou</strong>
-				</div>
-				<div class="form-row col-lg-7 col-md-7 col-sm-12 col-12 pl-0">
-					<div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
-						<label for="dataEntrada_de"
-								 class="fw-bold">De:</label>
-						<input type="date"
-								 class="form-control"
-								 name="dataEntrada_de"
-								 id="dataEntrada_de"
-								 #dataEntrada_de="ngModel"
-								 [ngModel]="filtro.dataEntrada.de | date : 'yyyy-MM-dd' : 'UTC'"
-								 (change)="filtro.dataEntrada.de = dataEntrada_de.value"
-								 [disabled]="dataEntrada_data.value">
-					</div>
-					<div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
-						<label for="dataEntrada_ate"
-								 class="fw-bold">Até:</label>
-						<input type="date"
-								 class="form-control"
-								 name="dataEntrada_ate"
-								 id="dataEntrada_ate"
-								 #dataEntrada_ate="ngModel"
-								 [ngModel]="filtro.dataEntrada.ate | date : 'yyyy-MM-dd' : 'UTC'"
-								 (change)="filtro.dataEntrada.ate = dataEntrada_ate.value"
-								 [disabled]="dataEntrada_data.value">
-					</div>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="d-flex ml-auto mt-1 flex-wrap">
-					<button type="button"
-							  class="btn btn-dark mr-2 ml-0"
-							  (click)="filtro.dataEntrada = {};filtrar()"
-							  [disabled]="loading"> Limpar </button>
-					<button type="button"
-							  class="btn btn-primary"
-							  (click)="filtrar()"
-							  [disabled]="loading"> Aplicar </button>
-				</div>
-			</div>
-		</div>
-	</form>
-	<!-- Data Documento -->
-	<form class="filter-menu novalidate"
-			#filterMenu_dataDocumento
-			data-name="filterMenu_dataDocumento"
-			data-open="false"
-			#form_dataDocumento>
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-4 col-md-4 col-sm-12 col-12 pr-0">
-					<label for="dataDocumento_data"
-							 class="text-orange fw-bold">Data Documento:</label>
-					<input type="date"
-							 class="form-control"
-							 name="dataDocumento_data"
-							 id="dataDocumento_data"
-							 #dataDocumento_data="ngModel"
-							 [ngModel]="filtro.dataDocumento.data | date : 'yyyy-MM-dd' : 'UTC'"
-							 (change)="filtro.dataDocumento.data = dataDocumento_data.value"
-							 [disabled]="dataDocumento_de.value || dataDocumento_ate.value ">
-				</div>
-				<div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center px-0">
-					<strong class="text-orange fw-bold">ou</strong>
-				</div>
-				<div class="form-row col-lg-7 col-md-7 col-sm-12 col-12 pl-0">
-					<div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
-						<label for="dataDocumento_de"
-								 class="fw-bold">De:</label>
-						<input type="date"
-								 class="form-control"
-								 name="dataDocumento_de"
-								 id="dataDocumento_de"
-								 #dataDocumento_de="ngModel"
-								 [ngModel]="filtro.dataDocumento.de | date : 'yyyy-MM-dd' : 'UTC'"
-								 (change)="filtro.dataDocumento.de = dataDocumento_de.value"
-								 [disabled]="dataDocumento_data.value">
-					</div>
-					<div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
-						<label for="dataDocumento_ate"
-								 class="fw-bold">Até:</label>
-						<input type="date"
-								 class="form-control"
-								 name="dataDocumento_ate"
-								 id="dataDocumento_ate"
-								 #dataDocumento_ate="ngModel"
-								 [ngModel]="filtro.dataDocumento.ate | date : 'yyyy-MM-dd' : 'UTC'"
-								 (change)="filtro.dataDocumento.ate = dataDocumento_ate.value"
-								 [disabled]="dataDocumento_data.value">
-					</div>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="d-flex ml-auto mt-1 flex-wrap">
-					<button type="button"
-							  class="btn btn-dark mr-2 ml-0"
-							  (click)="filtro.dataDocumento = {};filtrar()"
-							  [disabled]="loading"> Limpar </button>
-					<button type="button"
-							  class="btn btn-primary"
-							  (click)="filtrar()"
-							  [disabled]="loading"> Aplicar </button>
-				</div>
-			</div>
-		</div>
-	</form>
-	<!-- Orgão Emissor -->
-	<form class="filter-menu novalidate"
-			#filterMenu_orgao
-			data-name="filterMenu_orgao"
-			data-open="false"
-			#form_orgao="ngForm">
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-					<div class="d-flex justify-content-between align-items-end">
-						<label for="orgao"
-								 class="text-orange fw-bold">Orgão Emissor:</label>
-						<button type="reset"
-								  class="clear_filter"
-								  [disabled]="loading"
-								  (click)="form_orgao.reset(); filtrar()">Limpar</button>
-					</div>
-					<div class="d-flex mt-2">
-						<div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-							<input type="text"
-									 class="form-control"
-									 name="orgao"
-									 orgao="orgao"
-									 #orgao="ngModel"
-									 [(ngModel)]="filtro.orgao">
-						</div>
-						<button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-								  (click)="filtrar()"
-								  [disabled]="loading">
-							<span>
-								<fa-icon [icon]="faFilter"></fa-icon>
-							</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<!-- Tipo -->
-	<form class="filter-menu novalidate"
-			#filterMenu_tipoDocumento
-			data-name="filterMenu_tipoDocumento"
-			data-open="false"
-			#form_tipoDocumento="ngForm">
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-					<div class="d-flex justify-content-between align-items-end">
-						<label for="tipoDocumento"
-								 class="text-orange fw-bold">Tipo:</label>
-						<button type="reset"
-								  class="clear_filter"
-								  [disabled]="loading"
-								  (click)="form_tipoDocumento.reset(); filtrar()">Limpar</button>
-					</div>
-					<div class="d-flex mt-2">
-						<div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-							<input type="text"
-									 class="form-control"
-									 name="tipoDocumento"
-									 tipoDocumento="tipoDocumento"
-									 #tipoDocumento="ngModel"
-									 [(ngModel)]="filtro.tipoDocumento">
-						</div>
-						<button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-								  (click)="filtrar()"
-								  [disabled]="loading">
-							<span>
-								<fa-icon [icon]="faFilter"></fa-icon>
-							</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-
-	<!-- Número Documento -->
-	<form class="filter-menu novalidate"
-			#filterMenu_numeroDocumento
-			data-name="filterMenu_numeroDocumento"
-			data-open="false"
-			#form_numeroDocumento="ngForm">
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-					<div class="d-flex justify-content-between align-items-end">
-						<label for="numeroDocumento"
-								 class="text-orange fw-bold">Número Documento:</label>
-						<button type="reset"
-								  class="clear_filter"
-								  [disabled]="loading"
-								  (click)="form_numeroDocumento.reset(); filtrar()">Limpar</button>
-					</div>
-					<div class="d-flex mt-2">
-						<div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-							<input type="text"
-									 class="form-control"
-									 name="numeroDocumento"
-									 numeroDocumento="numeroDocumento"
-									 #numeroDocumento="ngModel"
-									 [(ngModel)]="filtro.numeroDocumento">
-						</div>
-						<button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-								  (click)="filtrar()"
-								  [disabled]="loading">
-							<span>
-								<fa-icon [icon]="faFilter"></fa-icon>
-							</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-
-	<!-- Resumo -->
-	<form class="filter-menu novalidate"
-			#filterMenu_resumo
-			data-name="filterMenu_resumo"
-			data-open="false"
-			#form_resumo="ngForm">
-		<div class="p-2">
-			<div class="form-row justify-content-between">
-				<div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-					<div class="d-flex justify-content-between align-items-end">
-						<label for="resumo"
-								 class="text-orange fw-bold">Resumo:</label>
-						<button type="reset"
-								  class="clear_filter"
-								  [disabled]="loading"
-								  (click)="form_resumo.reset(); filtrar()">Limpar</button>
-					</div>
-					<div class="d-flex mt-2">
-						<div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-							<input type="text"
-									 class="form-control"
-									 name="resumo"
-									 resumo="resumo"
-									 #resumo="ngModel"
-									 [(ngModel)]="filtro.resumo">
-						</div>
-						<button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-								  (click)="filtrar()"
-								  [disabled]="loading">
-							<span>
-								<fa-icon [icon]="faFilter"></fa-icon>
-							</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-
-	<!-- Link -->
-	<form class="filter-menu novalidate"
-  #filterMenu_link
-  data-name="filterMenu_link"
-  data-open="false"
-  #form_link="ngForm">
-<div class="p-2">
-  <div class="form-row justify-content-between">
-    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
-      <div class="d-flex justify-content-between align-items-end">
-        <label for="link"
-             class="text-orange fw-bold">Link:</label>
-        <button type="reset"
-              class="clear_filter"
-              [disabled]="loading"
-              (click)="form_link.reset(); filtrar()">Limpar</button>
-      </div>
-      <div class="d-flex mt-2">
-        <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
-          <input type="text"
-               class="form-control"
-               name="link"
-               link="link"
-               #link="ngModel"
-               [(ngModel)]="filtro.link">
+  <!-- Id -->
+  <form class="filter-menu novalidate"
+        #filterMenu_id
+        data-name="filterMenu_id"
+        data-open="false"
+        #form_id="ngForm">
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
+          <div class="d-flex justify-content-between align-items-end">
+            <label for="id"
+                   class="text-orange fw-bold">Id:</label>
+            <button type="reset"
+                    class="clear_filter"
+                    [disabled]="loading"
+                    (click)="form_id.reset(); filtrar()">Limpar</button>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
+              <input mask="0*"
+                     class="form-control"
+                     name="id"
+                     id="id"
+                     #id="ngModel"
+                     [(ngModel)]="filtro.id">
+            </div>
+            <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
+                    (click)="filtrar()"
+                    [disabled]="loading">
+              <span>
+                <fa-icon [icon]="faFilter"></fa-icon>
+              </span>
+            </button>
+          </div>
         </div>
-        <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
-              (click)="filtrar()"
-              [disabled]="loading">
-          <span>
-            <fa-icon [icon]="faFilter"></fa-icon>
-          </span>
-        </button>
       </div>
     </div>
-  </div>
+  </form>
+  <!-- Data Entrada -->
+  <form class="filter-menu novalidate"
+        #filterMenu_dataEntrada
+        data-name="filterMenu_dataEntrada"
+        data-open="false"
+        #form_dataEntrada>
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-4 col-md-4 col-sm-12 col-12 pr-0">
+          <label for="dataEntrada_data"
+                 class="text-orange fw-bold">Data Entrada:</label>
+          <input type="date"
+                 class="form-control"
+                 name="dataEntrada_data"
+                 id="dataEntrada_data"
+                 #dataEntrada_data="ngModel"
+                 [ngModel]="filtro.dataEntrada.data | date : 'yyyy-MM-dd' : 'UTC'"
+                 (change)="filtro.dataEntrada.data = dataEntrada_data.value"
+                 [disabled]="dataEntrada_de.value || dataEntrada_ate.value ">
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center px-0">
+          <strong class="text-orange fw-bold">ou</strong>
+        </div>
+        <div class="form-row col-lg-7 col-md-7 col-sm-12 col-12 pl-0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+            <label for="dataEntrada_de"
+                   class="fw-bold">De:</label>
+            <input type="date"
+                   class="form-control"
+                   name="dataEntrada_de"
+                   id="dataEntrada_de"
+                   #dataEntrada_de="ngModel"
+                   [ngModel]="filtro.dataEntrada.de | date : 'yyyy-MM-dd' : 'UTC'"
+                   (change)="filtro.dataEntrada.de = dataEntrada_de.value"
+                   [disabled]="dataEntrada_data.value">
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+            <label for="dataEntrada_ate"
+                   class="fw-bold">Até:</label>
+            <input type="date"
+                   class="form-control"
+                   name="dataEntrada_ate"
+                   id="dataEntrada_ate"
+                   #dataEntrada_ate="ngModel"
+                   [ngModel]="filtro.dataEntrada.ate | date : 'yyyy-MM-dd' : 'UTC'"
+                   (change)="filtro.dataEntrada.ate = dataEntrada_ate.value"
+                   [disabled]="dataEntrada_data.value">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="d-flex ml-auto mt-1 flex-wrap">
+          <button type="button"
+                  class="btn btn-dark mr-2 ml-0"
+                  (click)="filtro.dataEntrada = {};filtrar()"
+                  [disabled]="loading"> Limpar </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="filtrar()"
+                  [disabled]="loading"> Aplicar </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Data Emissão -->
+  <form class="filter-menu novalidate"
+        #filterMenu_dataDocumento
+        data-name="filterMenu_dataDocumento"
+        data-open="false"
+        #form_dataDocumento>
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-4 col-md-4 col-sm-12 col-12 pr-0">
+          <label for="dataDocumento_data"
+                 class="text-orange fw-bold">Data Emissão:</label>
+          <input type="date"
+                 class="form-control"
+                 name="dataDocumento_data"
+                 id="dataDocumento_data"
+                 #dataDocumento_data="ngModel"
+                 [ngModel]="filtro.dataDocumento.data | date : 'yyyy-MM-dd' : 'UTC'"
+                 (change)="filtro.dataDocumento.data = dataDocumento_data.value"
+                 [disabled]="dataDocumento_de.value || dataDocumento_ate.value ">
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-12 col-12 d-flex align-items-center justify-content-center px-0">
+          <strong class="text-orange fw-bold">ou</strong>
+        </div>
+        <div class="form-row col-lg-7 col-md-7 col-sm-12 col-12 pl-0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+            <label for="dataDocumento_de"
+                   class="fw-bold">De:</label>
+            <input type="date"
+                   class="form-control"
+                   name="dataDocumento_de"
+                   id="dataDocumento_de"
+                   #dataDocumento_de="ngModel"
+                   [ngModel]="filtro.dataDocumento.de | date : 'yyyy-MM-dd' : 'UTC'"
+                   (change)="filtro.dataDocumento.de = dataDocumento_de.value"
+                   [disabled]="dataDocumento_data.value">
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-6">
+            <label for="dataDocumento_ate"
+                   class="fw-bold">Até:</label>
+            <input type="date"
+                   class="form-control"
+                   name="dataDocumento_ate"
+                   id="dataDocumento_ate"
+                   #dataDocumento_ate="ngModel"
+                   [ngModel]="filtro.dataDocumento.ate | date : 'yyyy-MM-dd' : 'UTC'"
+                   (change)="filtro.dataDocumento.ate = dataDocumento_ate.value"
+                   [disabled]="dataDocumento_data.value">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="d-flex ml-auto mt-1 flex-wrap">
+          <button type="button"
+                  class="btn btn-dark mr-2 ml-0"
+                  (click)="filtro.dataDocumento = {};filtrar()"
+                  [disabled]="loading"> Limpar </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="filtrar()"
+                  [disabled]="loading"> Aplicar </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Orgão Emissor -->
+  <form class="filter-menu novalidate"
+        #filterMenu_orgao
+        data-name="filterMenu_orgao"
+        data-open="false"
+        #form_orgao="ngForm">
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
+          <div class="d-flex justify-content-between align-items-end">
+            <label for="orgao"
+                   class="text-orange fw-bold">Orgão Emissor:</label>
+            <button type="reset"
+                    class="clear_filter"
+                    [disabled]="loading"
+                    (click)="form_orgao.reset(); filtrar()">Limpar</button>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
+              <input type="text"
+                     class="form-control"
+                     name="orgao"
+                     orgao="orgao"
+                     #orgao="ngModel"
+                     [(ngModel)]="filtro.orgao">
+            </div>
+            <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
+                    (click)="filtrar()"
+                    [disabled]="loading">
+              <span>
+                <fa-icon [icon]="faFilter"></fa-icon>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Tipo -->
+  <form class="filter-menu novalidate"
+        #filterMenu_tipoDocumento
+        data-name="filterMenu_tipoDocumento"
+        data-open="false"
+        #form_tipoDocumento="ngForm">
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
+          <div class="d-flex justify-content-between align-items-end">
+            <label for="tipoDocumento"
+                   class="text-orange fw-bold">Tipo:</label>
+            <button type="reset"
+                    class="clear_filter"
+                    [disabled]="loading"
+                    (click)="form_tipoDocumento.reset(); filtrar()">Limpar</button>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
+              <input type="text"
+                     class="form-control"
+                     name="tipoDocumento"
+                     tipoDocumento="tipoDocumento"
+                     #tipoDocumento="ngModel"
+                     [(ngModel)]="filtro.tipoDocumento">
+            </div>
+            <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
+                    (click)="filtrar()"
+                    [disabled]="loading">
+              <span>
+                <fa-icon [icon]="faFilter"></fa-icon>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Número Documento -->
+  <form class="filter-menu novalidate"
+        #filterMenu_numeroDocumento
+        data-name="filterMenu_numeroDocumento"
+        data-open="false"
+        #form_numeroDocumento="ngForm">
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
+          <div class="d-flex justify-content-between align-items-end">
+            <label for="numeroDocumento"
+                   class="text-orange fw-bold">Número Documento:</label>
+            <button type="reset"
+                    class="clear_filter"
+                    [disabled]="loading"
+                    (click)="form_numeroDocumento.reset(); filtrar()">Limpar</button>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
+              <input type="text"
+                     class="form-control"
+                     name="numeroDocumento"
+                     numeroDocumento="numeroDocumento"
+                     #numeroDocumento="ngModel"
+                     [(ngModel)]="filtro.numeroDocumento">
+            </div>
+            <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
+                    (click)="filtrar()"
+                    [disabled]="loading">
+              <span>
+                <fa-icon [icon]="faFilter"></fa-icon>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Resumo -->
+  <form class="filter-menu novalidate"
+        #filterMenu_resumo
+        data-name="filterMenu_resumo"
+        data-open="false"
+        #form_resumo="ngForm">
+    <div class="p-2">
+      <div class="form-row justify-content-between">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 pr-0">
+          <div class="d-flex justify-content-between align-items-end">
+            <label for="resumo"
+                   class="text-orange fw-bold">Resumo:</label>
+            <button type="reset"
+                    class="clear_filter"
+                    [disabled]="loading"
+                    (click)="form_resumo.reset(); filtrar()">Limpar</button>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="col-lg-10 col-md-10 col-sm-10 pl-0 pr-0">
+              <input type="text"
+                     class="form-control"
+                     name="resumo"
+                     resumo="resumo"
+                     #resumo="ngModel"
+                     [(ngModel)]="filtro.resumo">
+            </div>
+            <button class="btn btn-pink d-flex align-items-center justify-content-center col-lg-1 col-md-1 col-sm-1 col-1 ml-1 px-3"
+                    (click)="filtrar()"
+                    [disabled]="loading">
+              <span>
+                <fa-icon [icon]="faFilter"></fa-icon>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
-</form>
-
-</div>
-
 <div class="loadingModal"
-	  [class.loadingModal--hidden]="!loading">
-	<span class="spinner-border spinner-border-sm mr-1"></span>
+     [class.loadingModal--hidden]="!loading">
+  <span class="spinner-border spinner-border-sm mr-1"></span>
 </div>
 <router-outlet></router-outlet>

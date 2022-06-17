@@ -7,15 +7,15 @@ import { FiltroComponent } from './filtro/filtro.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { FormComponent } from './form/form.component';
 import { DeleteComponent } from './delete/delete.component';
-
+import { DetalhesComponent } from './detalhes/detalhes.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
     DocumentosComponent,
     FiltroComponent,
-    FormComponent,
+    DetalhesComponent,
     DeleteComponent
   ],
   imports: [
@@ -24,6 +24,7 @@ import { DeleteComponent } from './delete/delete.component';
     FontAwesomeModule,
     FormsModule,
     TableModule,
+    DragDropModule
   ]
 })
 export class DocumentosModule { }

@@ -56,12 +56,7 @@
                   <input type="text" class="form-control" name="resumo" id="resumo" #resumo="ngModel"
                          [(ngModel)]="filtro.resumo">
                 </div>
-                <!-- Link -->
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
-                  <label for="link">Link: </label>
-                  <input type="text" class="form-control" name="link" id="link" #link="ngModel"
-                         [(ngModel)]="filtro.link">
-                </div>
+
               </div>
             </div>
           </div>
@@ -103,11 +98,11 @@
                 </div>
               </div>
             </div>
-            <!--  Data Documento -->
+            <!--  Data Emissão -->
             <div class="m-1">
               <div class="form-row bg-light justify-content-between border pt-2 px-2">
                 <div class="form-group col-lg-4 col-md-4 col-sm-12 col-12">
-                  <label for="dataDocumento_data" class="text-orange fw-bold">Data Documento:</label>
+                  <label for="dataDocumento_data" class="text-orange fw-bold">Data Emissão:</label>
                   <input type="date" class="form-control" name="dataDocumento_data" id="dataDocumento_data"
                          #dataDocumento_data="ngModel" [ngModel]="filtro.dataDocumento.data | date : 'yyyy-MM-dd' : 'UTC'"
                          (change)="filtro.dataDocumento.data = dataDocumento_data.value"
